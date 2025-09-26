@@ -7,10 +7,15 @@ interface Props {
   stop: { id: number; name: string; order: number };
   etasByBus: Record<string, { stopId: number; minutes: number }[]>;
   positions: Record<string, { busId: string; lat: number; lng: number }>;
-  mapRef: React.RefObject<MapView | null>; 
+  mapRef: React.RefObject<MapView | null>;
 }
 
-export default function StopEtaCard({ stop, etasByBus, positions, mapRef }: Props) {
+export default function StopEtaCard({
+  stop,
+  etasByBus,
+  positions,
+  mapRef,
+}: Props) {
   return (
     <View style={styles.stopCard}>
       <Text style={styles.stopName}>
@@ -29,7 +34,7 @@ export default function StopEtaCard({ stop, etasByBus, positions, mapRef }: Prop
                 if (pos) {
                   mapRef.current?.animateToRegion(
                     {
-                      latitude: pos.lat,
+                      latitude: pos.lat - 0.001, 
                       longitude: pos.lng,
                       latitudeDelta: 0.01,
                       longitudeDelta: 0.01,

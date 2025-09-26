@@ -5,14 +5,15 @@ import { Ionicons } from "@expo/vector-icons";
 interface Props {
   value: string;
   onChange: (text: string) => void;
+  placeholder: string; // placeholder opcional
 }
 
-export default function SearchBar({ value, onChange }: Props) {
+export default function SearchBar({ value, onChange, placeholder }: Props) {
   return (
     <View style={styles.container}>
       <Ionicons name="search-outline" size={22} color="#555" />
       <TextInput
-        placeholder="Buscar compañía..."
+        placeholder={placeholder} // usar placeholder del prop
         style={styles.input}
         value={value}
         onChangeText={onChange}

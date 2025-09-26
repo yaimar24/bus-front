@@ -19,7 +19,7 @@ import SearchBar from "../components/SearchBar";
 import CompanyItem from "../components/CompanyItem";
 import { RouteDto } from "../models/route";
 import { Bus } from "../models/bus";
-import { Company } from "../models/Company";
+import { Company } from "../models/company";
 
 type Props = NativeStackScreenProps<RootStackParamList, "BusLine">;
 
@@ -80,7 +80,7 @@ export default function BusLineScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <SearchBar value={search} onChange={setSearch} />
+      <SearchBar  placeholder={"Buscar Compañia"}  value={search} onChange={setSearch} />
       <FlatList
         data={filteredCompanies}
         keyExtractor={(item) => item.id.toString()}
@@ -90,7 +90,7 @@ export default function BusLineScreen({ navigation }: Props) {
             name={item.name}
             expanded={expandedCompany === item.id}
             onToggle={handleToggleCompany}
-            routes={routes[item.id] as RouteDto[]} // 👈 cast
+            routes={routes[item.id] as RouteDto[]} 
             onOpenRouteMap={handleOpenRouteMap}
           />
         )}

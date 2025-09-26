@@ -28,8 +28,8 @@ export default function BusMapScreen({ route }: Props) {
         initialRegion={{
           latitude: busRoute?.stops?.[0]?.latitude ?? 19.4326,
           longitude: busRoute?.stops?.[0]?.longitude ?? -99.1332,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
       >
         {Object.values(positions).map((pos) => (
