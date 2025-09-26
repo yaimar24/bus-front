@@ -17,3 +17,50 @@ export async function fetchBuses(route?: string) {
   const res = await axios.get(url);
   return res.data;
 }
+// GET /companies
+export async function fetchCompanies() {
+  const res = await axios.get(`${API_URL}/companies`);
+  return res.data; // lista de empresas
+}
+
+export async function fetchRoutesByCompany(id: number) {
+   const res = await axios.get(`${API_URL}/companies/${id}/routes`);
+  return res.data; // detalle de la empresa
+}
+
+export async function fetchBusPosition(id: number) {
+   const res = await axios.get(`${API_URL}/Buses/${id}`);
+  return res.data; // detalle de la empresa
+}
+// GET /companies/5/buses
+export async function fetchBusesByCompany(companyId: number) {
+  const res = await axios.get(`${API_URL}/companies/${companyId}/buses`);
+  return res.data; // buses de la empresa incluyendo su ruta
+}
+// GET /busassignments
+export async function fetchBusAssignments() {
+  const res = await axios.get(`${API_URL}/busassignments`);
+  return res.data; // lista de asignaciones
+}
+
+export async function fetchBusesByRoute(routeId: number) {
+  const res = await axios.get(`${API_URL}/busroutes/${routeId}/buses`);
+  return res.data; // lista de buses de esa ruta
+}
+
+// GET /busassignments/5
+export async function fetchBusAssignmentById(id: number) {
+  const res = await axios.get(`${API_URL}/busassignments/${id}`);
+  return res.data; // detalle de una asignación
+}
+// GET /drivers
+export async function fetchDrivers() {
+  const res = await axios.get(`${API_URL}/drivers`);
+  return res.data; // lista de conductores
+}
+
+// GET /drivers/5
+export async function fetchDriverById(id: number) {
+  const res = await axios.get(`${API_URL}/drivers/${id}`);
+  return res.data; // detalle de un conductor
+}

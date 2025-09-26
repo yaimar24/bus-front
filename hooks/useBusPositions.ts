@@ -1,64 +1,84 @@
-import * as SignalR from "@microsoft/signalr";
+// hooks/useBusPositions.ts
 import { useEffect, useState } from "react";
-import { fetchBuses } from "../services/api";
+import * as signalR from "@microsoft/signalr";
+import axios from "axios";
+
+const API_URL = "http://192.168.1.6:5262";
 
 export interface BusPosition {
   busId: string;
-  route: string;
   lat: number;
   lng: number;
   speed?: number;
-  timestamp: string;
-  source: string;
+  timestamp?: string;
 }
 
-export function useBusPositions(route?: string) {
-  const [positions, setPositions] = useState<BusPosition[]>([]);
+export function useBusPositions(busIds: string[]) {
+  const [positions, setPositions] = useState<Record<string, BusPosition>>({});
 
   useEffect(() => {
-    let connection: SignalR.HubConnection;
+    if (!busIds || busIds.length === 0) return;
 
-    async function init() {
-      // 1️⃣ Snapshot inicial
-      const initial = await fetchBuses(route);
-      setPositions(initial);
+    let connection: signalR.HubConnection;
 
-      // 2️⃣ Conectar a SignalR
-      connection = new SignalR.HubConnectionBuilder()
-        .withUrl("http://192.168.1.6:5262/positionshub")
-        .withAutomaticReconnect()
-        .build();
-
-      connection.on("ReceivePosition", (pos: BusPosition) => {
-        if (route && pos.route !== route) return;
-
-        // ✅ Actualizar sin duplicar buses
-        setPositions(prev => {
-          const idx = prev.findIndex(b => b.busId === pos.busId);
-          if (idx >= 0) {
-            const newArr = [...prev];
-            newArr[idx] = pos;
-            return newArr;
+    const start = async () => {
+      try {
+        // Snapshot inicial
+        for (const busId of busIds) {
+          try {
+            const res = await axios.get(`${API_URL}/Buses/${busId}`);
+            if (res.data) {
+              setPositions((prev) => ({
+                ...prev,
+                [busId]: {
+                  busId: String(res.data.busId),
+                  lat: Number(res.data.latitude),
+                  lng: Number(res.data.longitude),
+                  speed: res.data.speed,
+                  timestamp: res.data.timestamp,
+                },
+              }));
+            }
+          } catch (err) {
+            console.error(`❌ Error obteniendo snapshot del bus ${busId}`, err);
           }
-          return [...prev, pos];
+        }
+
+        // Conexión SignalR
+        connection = new signalR.HubConnectionBuilder()
+          .withUrl(`${API_URL}/positionshub`)
+          .withAutomaticReconnect()
+          .build();
+
+        connection.on("ReceivePosition", (data: any) => {
+          const busId = String(data.busId);
+          if (busIds.includes(busId)) {
+            setPositions((prev) => ({
+              ...prev,
+              [busId]: {
+                busId,
+                lat: Number(data.latitude ?? data.lat),
+                lng: Number(data.longitude ?? data.lng),
+                speed: data.speed,
+                timestamp: data.timestamp,
+              },
+            }));
+          }
         });
-      });
 
-      await connection.start();
-
-      if (route) {
-        connection.invoke("SubscribeRoute", route).catch(console.error);
+        await connection.start();
+        console.log("✅ Conectado a SignalR para buses:", busIds);
+      } catch (err) {
+        console.error("❌ Error en useBusPositions:", err);
       }
+    };
 
-      console.log("✅ Conectado a SignalR y listo");
-    }
-
-    init();
+    start();
 
     return () => {
-      connection?.stop();
+      if (connection) connection.stop();
     };
-  }, [route]);
+  }, [JSON.stringify(busIds)]);
 
   return positions;
 }
