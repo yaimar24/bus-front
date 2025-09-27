@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 interface Props {
   value: string;
   onChange: (text: string) => void;
-  placeholder: string; // placeholder opcional
+  placeholder: string; 
 }
 
 export default function SearchBar({ value, onChange, placeholder }: Props) {

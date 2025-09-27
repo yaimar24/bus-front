@@ -1,12 +1,3 @@
-export interface RouteSummary {
-  id: number;
-  name: string;
-}
-
-export interface RouteDto extends RouteSummary {
-  stops: Stop[];
-}
-
 export interface Stop {
   id: number;
   name: string;
@@ -15,3 +6,8 @@ export interface Stop {
   order: number;
 }
 
+export interface RouteDto {
+  id: number;
+  name: string;
+  stops: Stop[];
+}
