@@ -3,10 +3,11 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList, Bus } from "../App";
+import { RootStackParamList } from "../App";
 import { useBusPositions } from "../hooks/useBusPositions";
 import { useEtaCalculator } from "../hooks/useEtaCalculator";
 import EtaPanel from "../components/EtaPanel";
+import { Bus } from "../models/bus";
 
 type Props = NativeStackScreenProps<RootStackParamList, "BusMap">;
 

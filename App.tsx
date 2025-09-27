@@ -4,18 +4,13 @@ import HomeDashboard  from './components/HomeScreen';
 import BusLineScreen from './components/BusLineScreen';
 import BusMapScreen from './components/BusMapScreen';
 import { RouteDto } from './models/route';
+import { Bus } from './models/bus';
 
 export type RootStackParamList = {
   Home: undefined; 
   BusLine: undefined; 
   BusMap: { route: RouteDto; buses?: Bus[]; busId?: number; plateNumber?: string };
   RouteMap: { routeId: number; routeName: string }; 
-};
-
-export type Bus = {
-  id: number;
-  plateNumber: string;
-  position?: { lat: number; lng: number } | { latitude: number; longitude: number };
 };
 
 

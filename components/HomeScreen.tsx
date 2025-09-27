@@ -26,11 +26,11 @@ export default function HomeScreen({ navigation }: Props) {
       >
       
 
-        <TouchableOpacity style={styles.gearButton} activeOpacity={0.8}>
+     {/*    <TouchableOpacity style={styles.gearButton} activeOpacity={0.8}>
           <View >
             <Ionicons name="settings-sharp" size={20} color="#fff" />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </LinearGradient>
 
       {/* Tarjeta que flota (sobre el header) */}

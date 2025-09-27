@@ -2,9 +2,10 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
+import { Stop } from "../models/route";
 
 interface Props {
-  stop: { id: number; name: string; order: number };
+  stop: Stop;
   etasByBus: Record<string, { stopId: number; minutes: number }[]>;
   positions: Record<string, { busId: string; lat: number; lng: number }>;
   mapRef: React.RefObject<MapView | null>;
@@ -19,7 +20,7 @@ export default function StopEtaCard({
   return (
     <View style={styles.stopCard}>
       <Text style={styles.stopName}>
-        {stop.order}. {stop.name}
+       {/*  {stop.order}. */} {stop.name}
       </Text>
       <View style={styles.busList}>
         {Object.entries(etasByBus).map(([busId, etas]) => {
